@@ -7,21 +7,6 @@ vim.keymap.set("n", "<leader>", "<nop>")
 -- Redo remap
 vim.keymap.set("n", "U", "<C-r>")
 
--- Custom commands
-vim.api.nvim_create_autocmd("BufLeave", {
-	callback = function()
-		if vim.bo.modifiable and vim.bo.modified then
-			vim.cmd("silent! w")
-		end
-	end,
-})
-vim.api.nvim_create_autocmd("BufEnter", {
-	callback = function()
-		-- Auto update buffer if file content is changed by another process
-		vim.cmd("checktime")
-	end,
-})
-
 -- Swap between split buffers
 vim.keymap.set("n", "<C-Left>", ":wincmd h<CR>")
 vim.keymap.set("n", "<C-Right>", ":wincmd l<CR>")
@@ -50,6 +35,9 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { silent = false })
 -- Center buffer when progressing through search results
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+
+-- Toggle line number
+vim.keymap.set("n", "<leader>ln", ":ToggleLineNumber<CR>")
 
 -- Paste without replacing paste with what you are highlighted over
 vim.keymap.set("n", "<leader>p", '"_dP')

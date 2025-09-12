@@ -10,6 +10,9 @@ vim.g.maplocalleader = " "
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 
+-- Disable mouse
+vim.opt.mouse = ""
+
 -- Use appropriate when using indent command
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
@@ -75,6 +78,27 @@ vim.api.nvim_create_autocmd("textyankpost", {
 	end,
 })
 
+-- Auto save and auto refresh
+vim.api.nvim_create_autocmd("BufLeave", {
+	callback = function()
+		if vim.bo.modifiable and vim.bo.modified then
+			vim.cmd("silent! w")
+		end
+	end,
+})
+vim.api.nvim_create_autocmd("BufEnter", {
+	callback = function()
+		-- Auto update buffer if file content is changed by another process
+		vim.cmd("checktime")
+	end,
+})
+
+-- Toggle line number
+vim.api.nvim_create_user_command("ToggleLineNumber", function()
+	vim.opt.nu = not vim.opt.number:get()
+	vim.opt.rnu = not vim.opt.relativenumber:get()
+end, {})
+
 -----------------------------------------------------------
 -- Search Config
 -----------------------------------------------------------
@@ -87,8 +111,8 @@ vim.opt.smartcase = true
 
 -- Diagnostic display inline
 vim.diagnostic.config({
-	-- virtual_text = true,
-	virtual_lines = vim.fn.winwidth(0) > 50 and true or false,
+	virtual_text = vim.fn.winwidth(0) > 50 and true or false,
+	-- virtual_lines = true,
 	float = true,
 	underline = true,
 })
