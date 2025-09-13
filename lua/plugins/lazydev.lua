@@ -3,8 +3,7 @@ return {
 	ft = "lua",
 	opts = {
 		library = {
-			"nvim-cmp",
-			"nvim-lspconfig",
+			{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 		},
 	},
 }

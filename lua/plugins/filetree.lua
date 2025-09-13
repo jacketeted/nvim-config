@@ -1,15 +1,13 @@
 function my_on_attach(bufnr)
 	local api = require("nvim-tree.api")
-
 	local function opts(desc)
 		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 	end
-
+	api.config.mappings.default_on_attach(bufnr)
 	-- custom mappings
 	vim.keymap.set("n", "<CR>", function()
+		api.node.open.edit()
 		if api.tree.get_node_under_cursor().type == "file" then
-			api.node.open.edit()
-
 			if vim.fn.winwidth(0) <= 50 then
 				vim.cmd("NvimTreeClose")
 			end
