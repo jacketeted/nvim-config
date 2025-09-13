@@ -19,23 +19,20 @@ return {
 				ts_ls = {},
 				eslint = {},
 				tailwindcss = {},
-				bashls = {
-					--[[ 					settings = {
-						bashls = {
-							diagnostics = {
-								enable = true,
-							},
-						},
-					},
-	 ]]
-				},
+				bashls = {},
 			},
 		},
 		config = function(_, opts)
-			require("mason").setup()
+			require("mason").setup({})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "eslint", "ts_ls" },
+				ensure_installed = {
+					"lua_ls",
+					"eslint",
+					"ts_ls",
+					"bashls",
+					"cssls",
+				},
 			})
 
 			for server, config in pairs(opts.servers) do

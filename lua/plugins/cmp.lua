@@ -7,7 +7,7 @@ return {
 		keymap = {
 			preset = "default",
 			["<CR>"] = { "accept", "fallback" },
-			["<C-i>"] = { "show" },
+			["<C-l>"] = { "show" },
 		},
 		appearance = {
 			nerd_font_variant = "mono",

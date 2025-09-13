@@ -9,7 +9,6 @@ vim.g.maplocalleader = " "
 -- Number of spaces a tab represents
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
-
 -- Disable mouse
 vim.opt.mouse = ""
 
@@ -67,7 +66,6 @@ vim.opt.splitright = true
 
 -- Faster scrolling
 vim.opt.lazyredraw = true
-
 -- Highlight yank
 vim.api.nvim_create_autocmd("textyankpost", {
 	group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
@@ -81,8 +79,17 @@ vim.api.nvim_create_autocmd("textyankpost", {
 -- Auto save and auto refresh
 vim.api.nvim_create_autocmd("BufLeave", {
 	callback = function()
+		-- Close popup windows before changing buffer
+		local windows = vim.api.nvim_list_wins()
+		for _, value in ipairs(windows) do
+			if vim.api.nvim_win_get_config(value).relative ~= "" then
+				vim.api.nvim_win_close(value, true)
+			end
+		end
+		-- Format and save before changing buffer
 		if vim.bo.modifiable and vim.bo.modified then
-			vim.cmd("silent! w")
+			require("conform").format({ async = false })
+			vim.cmd("w")
 		end
 	end,
 })
@@ -111,6 +118,7 @@ vim.opt.smartcase = true
 
 -- Diagnostic display inline
 vim.diagnostic.config({
+	update_in_insert = true,
 	virtual_text = vim.fn.winwidth(0) > 50 and true or false,
 	-- virtual_lines = true,
 	float = true,

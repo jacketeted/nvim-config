@@ -12,6 +12,7 @@ vim.keymap.set("n", "<C-Left>", ":wincmd h<CR>")
 vim.keymap.set("n", "<C-Right>", ":wincmd l<CR>")
 vim.keymap.set("n", "<C-Up>", "<C-w><Up>")
 vim.keymap.set("n", "<C-Down>", "<C-w><Down>")
+
 -- Save and quit current file quicker
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { silent = false })
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { silent = false })
@@ -20,17 +21,25 @@ vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { silent = false })
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { silent = false })
 
 -- Navigate through buffers
-vim.keymap.set("n", "<S-Right>", ":bnext<CR>", { silent = false })
-vim.keymap.set("n", "<S-Left>", ":bprevious<CR>", { silent = false })
-
+vim.keymap.set("n", "<leader><Right>", ":bnext<CR>", { silent = false })
+vim.keymap.set("n", "<leader><Left>", ":bprevious<CR>", { silent = false })
 -- Close currently active buffer
 vim.keymap.set("n", "<C-c>", ":bwipeout<CR>", { silent = false })
 
 -- Center buffer when navigating up and down
 vim.keymap.set("n", "<S-Up>", "<C-u>zz")
 vim.keymap.set("n", "<S-Down>", "<C-d>zz")
+
 -- Terminal
-vim.keymap.set("n", "<leader>t", ":sp | term<CR> :resize 12<CR> ", { silent = false })
+if vim.fn.winwidth(0) > 50 then
+	TERMINAL_LINES = 13
+else
+	TERMINAL_LINES = 8
+end
+vim.keymap.set("n", "<leader>tb", ":sp | term<CR> :resize " .. TERMINAL_LINES .. "<CR>", { silent = false })
+vim.keymap.set("n", "<leader>tf", ":term<CR>", { silent = false })
+vim.keymap.set("n", "<leader>tr", ":vsp | term<CR>", { silent = false })
+
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { silent = false })
 -- Center buffer when progressing through search results
 vim.keymap.set("n", "n", "nzzzv")
