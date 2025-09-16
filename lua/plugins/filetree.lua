@@ -8,7 +8,7 @@ function my_on_attach(bufnr)
 	vim.keymap.set("n", "<CR>", function()
 		api.node.open.edit()
 		if api.tree.get_node_under_cursor().type == "file" then
-			if vim.fn.winwidth(0) <= 50 then
+			if require("config.screen_size").sm then
 				vim.cmd("NvimTreeClose")
 			end
 		end
@@ -28,6 +28,11 @@ return {
 	config = function()
 		require("nvim-tree").setup({
 			on_attach = my_on_attach,
+			view = {
+
+				-- preserve_window_proportions = true,
+				adaptive_size = false,
+			},
 		})
 	end,
 }
