@@ -1,5 +1,7 @@
+local get_buf_type = require("config.helpers.get_buf_type")
 local terminal_manager = require("config.helpers.terminal_manager")
 local filter = require("config.helpers.filter")
+local kill_buffer = require("config.helpers.kill_buffer")
 -----------------------------------------------------------
 -- Normal Mode
 -----------------------------------------------------------
@@ -22,7 +24,17 @@ end)
 vim.keymap.set("n", "<C-Left>", ":wincmd h<CR>")
 vim.keymap.set("n", "<C-Right>", ":wincmd l<CR>")
 vim.keymap.set("n", "<C-Up>", "<C-w><Up>")
-vim.keymap.set("n", "<C-Down>", "<C-w><Down>")
+vim.keymap.set("n", "<C-Down>", function()
+	vim.cmd("wincmd j")
+end)
+
+vim.keymap.set("t", "<C-w><Left>", function()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n> <C-w><Left>", true, true, true), "t", true)
+end)
+vim.keymap.set("t", "<C-w><Up>", function()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n> <C-w><Up>", true, true, true), "t", true)
+end)
+
 -- Jump to line with the same indent
 vim.keymap.set("v", "<leader>jsi", function()
 	vim.cmd("JumpForwardSameIndent")
@@ -54,16 +66,18 @@ end, { silent = false })
 vim.keymap.set("n", "<leader>kb", function()
 	local current_buf = vim.api.nvim_get_current_buf()
 	vim.cmd("SwapNextBuffer")
-	vim.api.nvim_buf_delete(current_buf, { force = true })
+	kill_buffer(current_buf)
 end)
+-- Kill all buffer of the same type except current buffer
 vim.keymap.set("n", "<leader>kab", function()
-	local current_buftype = vim.bo.buftype
+	local current_buf = vim.api.nvim_get_current_buf()
+	local current_buftype = get_buf_type(current_buf)
 	local filtered_bufs = filter(vim.api.nvim_list_bufs(), function(value)
-		local buftype = vim.api.nvim_get_option_value("buftype", { buf = value })
-		return buftype == current_buftype
+		local buftype = get_buf_type(value)
+		return buftype == current_buftype and value ~= current_buf
 	end)
 	for _, value in ipairs(filtered_bufs) do
-		vim.api.nvim_buf_delete(value, { force = true })
+		kill_buffer(value)
 	end
 end)
 
@@ -80,7 +94,14 @@ vim.keymap.set("n", "<leader>tb", terminal_manager.open_bottom_terminal, { silen
 vim.keymap.set("n", "<leader>tf", ":term<CR>", { silent = false })
 vim.keymap.set("n", "<leader>tr", terminal_manager.open_right_terminal, { silent = false })
 
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { silent = false })
+vim.keymap.set("t", "<C-t>c", "<C-\\><C-n> :q<CR>", { silent = false })
+vim.keymap.set("t", "<C-k>b", function()
+	vim.api.nvim_input(
+		vim.api.nvim_replace_termcodes("<C-b>:", true, true, true)
+			.. "kill-session"
+			.. vim.api.nvim_replace_termcodes("<CR>", true, true, true)
+	)
+end)
 
 -- Center buffer when progressing through search results
 vim.keymap.set("n", "n", "nzzzv")

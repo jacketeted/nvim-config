@@ -1,3 +1,4 @@
+local get_buf_type = require("config.helpers.get_buf_type")
 local filter = require("config.helpers.filter")
 local get_has_attached_window = require("config.helpers.get_has_attached_window")
 
@@ -38,7 +39,7 @@ local function terminal_manager_closure()
 			end
 			local filtered_bufs = {}
 			filtered_bufs = filter(vim.api.nvim_list_bufs(), function(value)
-				local buftype = vim.api.nvim_get_option_value("buftype", { buf = value })
+				local buftype = get_buf_type(value)
 				return "terminal" == buftype
 			end)
 			filtered_bufs = filter(filtered_bufs, function(value)
@@ -48,13 +49,15 @@ local function terminal_manager_closure()
 
 			if #filtered_bufs == 0 then
 				vim.cmd("sp")
-				vim.cmd("term")
+				vim.cmd("term tmux")
 				vim.cmd("resize " .. terminal_lines)
+				vim.cmd("startinsert")
 			else
 				vim.cmd("sp")
 				vim.cmd("resize " .. terminal_lines)
 				local win_id = vim.api.nvim_get_current_win()
 				vim.api.nvim_win_set_buf(win_id, filtered_bufs[1])
+				vim.cmd("startinsert")
 			end
 			bottom_term_winids = {}
 			table.insert(bottom_term_winids, vim.api.nvim_get_current_win())

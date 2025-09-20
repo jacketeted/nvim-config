@@ -1,15 +1,24 @@
+local get_buf_type = require("config.helpers.get_buf_type")
 local filter = require("config.helpers.filter")
 local get_has_attached_window = require("config.helpers.get_has_attached_window")
 ---@param callback fun(current_index:number,total:number):{next_index:number}
 ---@return nil
 local function buf_swap(callback)
 	local current_buf_id = vim.api.nvim_get_current_buf()
-	local current_buftype = vim.bo.buftype
+	local current_buftype = get_buf_type(current_buf_id)
+	if current_buftype ~= "terminal" then
+		local result = callback(1, 3)
+		if result.next_index == 2 then
+			vim.cmd("BufferLineCycleNext")
+		elseif result.next_index == 3 then
+			vim.cmd("BufferLineCyclePrev")
+		end
+		return
+	end
 	local bufs = vim.api.nvim_list_bufs()
 	local filtered_bufs = {}
 	filtered_bufs = filter(bufs, function(value)
-		print(vim.api.nvim_buf_get_name(value))
-		local buftype = vim.api.nvim_get_option_value("buftype", { buf = value })
+		local buftype = get_buf_type(value)
 		return current_buftype == buftype
 	end, current_buf_id)
 	local wins = vim.api.nvim_list_wins()

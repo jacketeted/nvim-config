@@ -1,4 +1,4 @@
-function my_on_attach(bufnr)
+local function my_on_attach(bufnr)
 	local api = require("nvim-tree.api")
 	local function opts(desc)
 		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
@@ -30,8 +30,8 @@ return {
 			on_attach = my_on_attach,
 			view = {
 
-				-- preserve_window_proportions = true,
-				adaptive_size = false,
+				preserve_window_proportions = true,
+				-- adaptive_size = false,
 			},
 		})
 	end,
