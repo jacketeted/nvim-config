@@ -1,4 +1,5 @@
 local kill_buffer = require("config.helpers.kill_buffer")
+local breakpoints = require("config.helpers.breakpoints")
 local filter = require("config.helpers.filter")
 local get_buf_type = require("config.helpers.get_buf_type")
 local should_save_session = false
@@ -6,13 +7,17 @@ vim.api.nvim_create_autocmd("User", {
 	pattern = "VeryLazy",
 	callback = function()
 		local buftype = get_buf_type(vim.api.nvim_get_current_buf())
-		if buftype == "nvim tree" then
+		-- Only load session if a git repository is opened
+		if buftype == "nvim tree" and vim.fn.isdirectory("./.git") then
+			-- Load session if it exists
 			if vim.fn.filereadable("./Session.vim") == 1 then
 				vim.cmd("source ./Session.vim")
 				vim.cmd("leftabove vsplit")
 				vim.cmd("NvimTreeOpen")
 			end
 			should_save_session = true
+			-- Load breakpoints
+			breakpoints.load()
 		end
 	end,
 	-- other plugins can be triggered
@@ -29,6 +34,8 @@ vim.api.nvim_create_autocmd("VimLeave", {
 				kill_buffer(value)
 			end
 			vim.cmd("mksession!")
+			-- Save breakpoints
+			breakpoints.store()
 		end
 	end,
 	-- other plugins can be triggered

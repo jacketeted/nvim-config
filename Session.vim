@@ -13,16 +13,17 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +1 .config/nvim/init.lua
-badd +23 .config/nvim/lua/config/event_listeners.lua
-badd +5 .config/nvim/lua/config/helpers/kill_buffer.lua
-badd +0 .config/nvim/lua/config/helpers/terminal_manager.lua
+badd +6 .config/nvim/lua/config/myconfig.lua
+badd +53 .config/nvim/lua/config/event_listeners.lua
+badd +81 .config/nvim/lua/plugins/debugadapter.lua
+badd +5 .config/nvim/init.lua
+badd +19 .config/nvim/lua/plugins/colorscheme.lua
+badd +20 .config/nvim/lua/plugins/completion.lua
 argglobal
 %argdel
 $argadd NvimTree_1
-edit .config/nvim/lua/config/helpers/terminal_manager.lua
+edit .config/nvim/lua/config/event_listeners.lua
 argglobal
-balt .config/nvim/init.lua
 setlocal foldmethod=manual
 setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
@@ -33,12 +34,12 @@ setlocal foldnestmax=20
 setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 28 - ((13 * winheight(0) + 13) / 26)
+let s:l = 53 - ((13 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 28
-normal! 08|
+keepjumps 53
+normal! 0
 lcd ~/.config/nvim
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

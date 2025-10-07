@@ -5,7 +5,7 @@ return {
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "melange",
+					theme = require("config.myconfig").theme,
 				},
 				sections = {
 					lualine_a = {},

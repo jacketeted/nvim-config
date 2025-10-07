@@ -6,6 +6,9 @@ vim.g.mapleader = " "
 -- Set leader key to space
 vim.g.maplocalleader = " "
 
+-- Manually set color mode to achieve consistencies across different terminal emulators
+vim.opt.background = require("config.myconfig").background
+
 -- Number of spaces a tab represents
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2

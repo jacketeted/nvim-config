@@ -34,6 +34,12 @@ end)
 vim.keymap.set("t", "<C-w><Up>", function()
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n> <C-w><Up>", true, true, true), "t", true)
 end)
+vim.keymap.set("t", "<C-w><Right>", function()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n> <C-w><Right>", true, true, true), "t", true)
+end)
+vim.keymap.set("t", "<C-w><Down>", function()
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n> <C-w><Down>", true, true, true), "t", true)
+end)
 
 -- Jump to line with the same indent
 vim.keymap.set("v", "<leader>jsi", function()
@@ -90,17 +96,11 @@ vim.keymap.set("n", "<S-Down>", "<C-d>zz")
 
 -- Terminal management
 vim.keymap.set("n", "<leader>tb", terminal_manager.open_bottom_terminal, { silent = false })
-
-vim.keymap.set("n", "<leader>tf", ":term<CR>", { silent = false })
 vim.keymap.set("n", "<leader>tr", terminal_manager.open_right_terminal, { silent = false })
 
 vim.keymap.set("t", "<C-t>c", "<C-\\><C-n> :q<CR>", { silent = false })
 vim.keymap.set("t", "<C-k>b", function()
-	vim.api.nvim_input(
-		vim.api.nvim_replace_termcodes("<C-b>:", true, true, true)
-			.. "kill-session"
-			.. vim.api.nvim_replace_termcodes("<CR>", true, true, true)
-	)
+	terminal_manager.kill_terminal()
 end)
 
 -- Center buffer when progressing through search results

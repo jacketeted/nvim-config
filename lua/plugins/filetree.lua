@@ -8,7 +8,7 @@ local function my_on_attach(bufnr)
 	vim.keymap.set("n", "<CR>", function()
 		api.node.open.edit()
 		if api.tree.get_node_under_cursor().type == "file" then
-			if require("config.screen_size").sm then
+			if require("config.myconfig").auto_close_filetree then
 				vim.cmd("NvimTreeClose")
 			end
 		end
@@ -16,23 +16,34 @@ local function my_on_attach(bufnr)
 end
 
 return {
-	"nvim-tree/nvim-tree.lua",
-	version = "*",
-	lazy = false,
-	keys = {
-		{ "<leader>e", "<cmd>NvimTreeToggle<cr>" },
-	},
-	dependencies = {
-		"nvim-tree/nvim-web-devicons",
-	},
-	config = function()
-		require("nvim-tree").setup({
-			on_attach = my_on_attach,
-			view = {
+	{
+		"nvim-tree/nvim-tree.lua",
+		version = "*",
+		lazy = false,
+		keys = {
+			{ "<leader>e", "<cmd>NvimTreeToggle<cr>" },
+		},
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("nvim-tree").setup({
+				on_attach = my_on_attach,
+				view = {
 
-				preserve_window_proportions = true,
-				-- adaptive_size = false,
-			},
-		})
-	end,
+					preserve_window_proportions = true,
+					-- adaptive_size = false,
+				},
+			})
+		end,
+	},
+	{
+		"antosha417/nvim-lsp-file-operations",
+		dependencies = {
+			"nvim-tree/nvim-tree.lua",
+		},
+		config = function()
+			require("lsp-file-operations").setup()
+		end,
+	},
 }
