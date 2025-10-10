@@ -38,6 +38,7 @@ return {
 		end,
 	},
 	{
+		-- Auto updating import statement after renaming file using file tree
 		"antosha417/nvim-lsp-file-operations",
 		dependencies = {
 			"nvim-tree/nvim-tree.lua",

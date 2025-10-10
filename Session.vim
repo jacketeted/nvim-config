@@ -13,32 +13,30 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +6 .config/nvim/lua/config/myconfig.lua
-badd +53 .config/nvim/lua/config/event_listeners.lua
-badd +81 .config/nvim/lua/plugins/debugadapter.lua
-badd +5 .config/nvim/init.lua
-badd +19 .config/nvim/lua/plugins/colorscheme.lua
-badd +20 .config/nvim/lua/plugins/completion.lua
+badd +17 .config/nvim/README.md
+badd +10 .config/nvim/lua/plugins/autocomplete.lua
+badd +54 .config/nvim/lua/plugins/completion.lua
+badd +42 .config/nvim/lua/plugins/filetree.lua
+badd +1 .config/nvim/lua/plugins/debugadapter.lua
+badd +8 .config/nvim/lua/plugins/chat.lua
 argglobal
 %argdel
 $argadd NvimTree_1
-edit .config/nvim/lua/config/event_listeners.lua
+edit .config/nvim/README.md
 argglobal
-setlocal foldmethod=manual
-setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
+setlocal foldmethod=expr
+setlocal foldexpr=v:lua.CopilotChatFoldExpr(v:lnum,\ 'â”€â”€â”€')
 setlocal foldmarker={{{,}}}
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=99
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldenable
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 53 - ((13 * winheight(0) + 13) / 27)
+let s:l = 17 - ((13 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 53
+keepjumps 17
 normal! 0
 lcd ~/.config/nvim
 tabnext 1

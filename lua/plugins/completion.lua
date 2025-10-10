@@ -51,4 +51,14 @@ return {
 		},
 		opts_extend = { "sources.default" },
 	},
+	-- Completion of Lua content exported by third party modules
+	{
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
+	},
 }
