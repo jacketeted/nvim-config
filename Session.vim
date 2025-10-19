@@ -13,31 +13,31 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +17 .config/nvim/README.md
-badd +10 .config/nvim/lua/plugins/autocomplete.lua
+badd +1 .config/nvim/README.md
+badd +1 .config/nvim/lua/plugins/autocomplete.lua
 badd +54 .config/nvim/lua/plugins/completion.lua
-badd +42 .config/nvim/lua/plugins/filetree.lua
-badd +1 .config/nvim/lua/plugins/debugadapter.lua
-badd +8 .config/nvim/lua/plugins/chat.lua
+badd +16 .config/nvim/lua/plugins/treesitter.lua
 argglobal
 %argdel
 $argadd NvimTree_1
-edit .config/nvim/README.md
+edit .config/nvim/lua/plugins/treesitter.lua
 argglobal
-setlocal foldmethod=expr
-setlocal foldexpr=v:lua.CopilotChatFoldExpr(v:lnum,\ 'â”€â”€â”€')
+setlocal foldmethod=manual
+setlocal foldexpr=v:lua.vim.treesitter.foldexpr()
 setlocal foldmarker={{{,}}}
 setlocal foldignore=#
-setlocal foldlevel=99
+setlocal foldlevel=0
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldenable
-let s:l = 17 - ((13 * winheight(0) + 10) / 20)
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 16 - ((15 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 17
-normal! 0
+keepjumps 16
+normal! 01|
 lcd ~/.config/nvim
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

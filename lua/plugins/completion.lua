@@ -20,6 +20,7 @@ return {
 			require("copilot").setup(opts)
 		end,
 	},
+
 	{
 		"saghen/blink.cmp",
 		dependencies = { "rafamadriz/friendly-snippets" },
@@ -27,7 +28,7 @@ return {
 		version = "1.*",
 		opts = {
 			enabled = function()
-				if vim.bo.filetype == "markdown" then
+				if vim.bo.filetype == "markdown" or vim.bo.filetype == "copilot-chat" then
 					return false
 				else
 					return true
